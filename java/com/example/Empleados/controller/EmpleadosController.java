@@ -1,10 +1,10 @@
 package com.example.Empleados.controller;
 
+import com.example.Empleados.exception.ApiRequestException;
 import com.example.Empleados.models.EmpleadosModel;
 import com.example.Empleados.services.EmpleadosService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +26,7 @@ private EmpleadosService empleadosService;
 
    @GetMapping("empleados/{dni}")
     public EmpleadosModel getEmpleado(@PathVariable String dni){
+
        return empleadosService.getEmpleados(dni);
 
    }
@@ -46,7 +47,6 @@ private EmpleadosService empleadosService;
 
     @DeleteMapping("/empleados/{id}")
   public void deleteEmpelados(@PathVariable UUID id)  {
-
        empleadosService.deleteEmpleados(id);
     }
 }
