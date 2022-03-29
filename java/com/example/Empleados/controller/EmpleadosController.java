@@ -1,6 +1,5 @@
 package com.example.Empleados.controller;
 
-import com.example.Empleados.exception.ApiRequestException;
 import com.example.Empleados.models.EmpleadosModel;
 import com.example.Empleados.services.EmpleadosService;
 import org.springframework.beans.factory.annotation.Autowired;

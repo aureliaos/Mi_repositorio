@@ -1,6 +1,8 @@
 package com.example.Empleados.services;
 
-import com.example.Empleados.exception.ApiRequestException;
+import com.example.Empleados.exception.FieldEmptyException;
+import com.example.Empleados.exception.NoDataFoundException;
+import com.example.Empleados.exception.RescourceNotFoundException;
 import com.example.Empleados.models.EmpleadosModel;
 import org.springframework.stereotype.Service;
 
@@ -13,32 +15,31 @@ public class EmpleadosService {
 
     public  List<EmpleadosModel> getAllEmpleados(){
         if(empleadosModelList.size()>0){
-        return  empleadosModelList;
+
+            return  empleadosModelList;
         }
-        throw  new ApiRequestException("No hay ningún empleado");
+        throw new RescourceNotFoundException("No hay ningún empleado");
+
     }
 
     public EmpleadosModel getEmpleados(String dni){
 
 
-      Optional<EmpleadosModel>emp=  empleadosModelList.stream().filter(t-> t.getDni().equals(dni)).findFirst();
+      Optional<EmpleadosModel>emp= empleadosModelList.stream().filter(t-> t.getDni().equals(dni)).findFirst();
 
       if(!emp.isPresent())
       {
-          throw new ApiRequestException("No existe dicho dni ");
+          throw new NoDataFoundException("No existe dicho dni ");
       }
         return emp.get();
     }
 
     public void addEmpleados(EmpleadosModel empleadosModel){
 
-        if(empleadosModel.getNombre().equals(""))
+        if(empleadosModel.getNombre().isEmpty() || empleadosModel.getApellidos().isEmpty()
+                ||empleadosModel.getDni().isEmpty())
         {
-            throw new ApiRequestException("El nombre del empleado está vacio ");
-        }
-        if(empleadosModel.getApellidos().equals(""))
-        {
-            throw new ApiRequestException("El apellido del empleado está vacio ");
+            throw new FieldEmptyException("Un dato del empleado está vacio ");
         }
 
         UUID result = UUID.fromString(UUID.randomUUID().toString());
@@ -49,6 +50,11 @@ public class EmpleadosService {
 
     public void updateEmpleado(UUID id, EmpleadosModel empleadosModel) {
 
+        if(empleadosModel.getNombre().isEmpty() || empleadosModel.getApellidos().isEmpty()
+        ||empleadosModel.getDni().isEmpty())
+        {
+            throw new FieldEmptyException("Un dato del empleado está vacio ");
+        }
         empleadosModelList.stream()
                 .filter(p -> p.getId().equals(id)).findFirst()
                 .map(p -> empleadosModelList.set( empleadosModelList.indexOf(p), empleadosModel))
@@ -57,7 +63,12 @@ public class EmpleadosService {
 
     public void deleteEmpleados(UUID id){
 
-        empleadosModelList.removeIf(t->t.getId().equals(id));
+        if (!empleadosModelList.removeIf(t -> t.getId().equals(id)))
+        {
+            throw new NoDataFoundException("No existe dicho id ");
+
+        }
+
     }
 
 }
