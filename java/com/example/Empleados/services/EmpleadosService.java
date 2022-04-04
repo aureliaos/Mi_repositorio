@@ -19,13 +19,13 @@ public class EmpleadosService {
 
 
     public  List<EmpleadosModel> getAllEmpleados(){
-
-       if(empleadosRepository.findAll().isEmpty())
+       List<EmpleadosModel> empleadosModelList = empleadosRepository.findAll();
+       if(CollectionUtils.isNotEmpty(empleadosModelList))
       {
         throw new NotFoundException("No hay ningún empleado");
       }
 
-            return  empleadosRepository.findAll();
+           empleadosModelList;
     }
 
 
@@ -42,8 +42,8 @@ public class EmpleadosService {
 
     public void addEmpleados(EmpleadosModel empleadosModel){
 
-        if(empleadosModel.getNombre().isEmpty() || empleadosModel.getApellidos().isEmpty()
-                ||empleadosModel.getDni().isEmpty())
+        if(StringUtils.isBlank(empleadosModel.getNombre())  || StringUtils.isBlank(empleadosModel.getApellidos())
+                || StringUtils.isBlank(empleadosModel.getDni()) )
         {
 
             throw new NoContentException("Un dato del empleado esta vacio");
@@ -62,8 +62,8 @@ public class EmpleadosService {
 
     public void updateEmpleado(UUID id, EmpleadosModel empleadosModel) {
 
-        if(!empleadosRepository.existsById(id) || empleadosModel.getNombre().isEmpty()
-                || empleadosModel.getApellidos().isEmpty() ||empleadosModel.getDni().isEmpty())
+        if(StringUtils.isBlank(empleadosModel.getNombre())
+                || StringUtils.isBlank(empleadosModel.getApellidos()) || StringUtils.isBlank(empleadosModel.getDni()))
 
         {
             throw new NoContentException("Un dato del empleado está vacio ");
@@ -85,7 +85,6 @@ public class EmpleadosService {
             throw new NotFoundException("No existe dicho id ");
 
         }
-        else
             empleadosRepository.deleteById(id);
     }
 
