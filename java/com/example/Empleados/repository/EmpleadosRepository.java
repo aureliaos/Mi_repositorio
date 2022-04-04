@@ -8,6 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface EmpleadosRepository extends MongoRepository<EmpleadosModel, UUID> {
-    boolean existsByDni(String dni);
-    EmpleadosModel findByDni(String dni);
+    boolean existsByDni(String dni); 
+    EmpleadosModel findByDni(String dni); 
 }
