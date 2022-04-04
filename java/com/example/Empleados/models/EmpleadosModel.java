@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(value = "Empleados")
 @Data
+@AllArgsConstructor
 public class EmpleadosModel {
 @Id
     private UUID id;
@@ -17,13 +18,4 @@ public class EmpleadosModel {
     private String apellidos;
 
     private String dni;
-
-
-    public EmpleadosModel(UUID id, String nombre, String apellidos, String dni) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.dni = dni;
-    }
-
 }
